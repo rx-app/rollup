@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/rx-app/rollup#readme",
   "dependencies": {
-    "rollup": "^3.12.0"
+    "rollup": "^2.61.1"
   }
 }
