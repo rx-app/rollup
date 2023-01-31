@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/rx-app/rollup#readme",
   "dependencies": {
-    "rollup": "^2.61.1"
+    "rollup": "^2.61.1",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "rollup-plugin-babel": "^4.4.0"
   }
 }

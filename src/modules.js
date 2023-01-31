@@ -1,7 +1,8 @@
 // src/modules.js
 
 const sayHelloRollup = () => {
-    console.log('sayHello,Rollup');
+  let a ='a'
+    console.log('sayHello,Rollup'+a);
   };
   
   export { sayHelloRollup };
