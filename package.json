@@ -1,0 +1,24 @@
+{
+  "name": "rollup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rollup.config.js",
+  "scripts": {
+    "dev": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rx-app/rollup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rx-app/rollup/issues"
+  },
+  "homepage": "https://github.com/rx-app/rollup#readme",
+  "dependencies": {
+    "rollup": "^3.12.0"
+  }
+}
