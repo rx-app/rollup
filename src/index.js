@@ -1,3 +1,2 @@
-import { sayHelloRollup } from './modules';
-
-sayHelloRollup();
+export const a = 100;
+export default {a:1}
