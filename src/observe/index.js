@@ -9,7 +9,7 @@ class Observer{
     }
 }
 export function defineReactive(target,key,value){
-    Object.defineProperties(target,key,{
+    Object.defineProperty(target,key,{
         get(){
             return value
         },
