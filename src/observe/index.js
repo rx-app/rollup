@@ -3,7 +3,7 @@ import { newArrayProto } from "./array"
 class Observer{
     
     constructor(data){
-        
+        data.__ob__ = this  // 这里是是为了把observeArray这个方法传递过去
         if(Array.isArray(data)){
             data.__proto__ = newArrayProto  //如果是数组，先重写原型链上的push，ushift之类的方法。
             this.observeArray(data)

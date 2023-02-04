@@ -19,7 +19,8 @@ methods.forEach(method=>{
         
         
         console.log(method)
-        let inserted
+        let inserted;
+        let ob = this.__ob__;
         switch (method) {
             case value:
                 case 'push':
@@ -32,9 +33,9 @@ methods.forEach(method=>{
             default:
                 break;
         }
-        console.log(inserted) 
-        if(inserted){
-            
+        // console.log(inserted) 
+        if(inserted ){
+            ob.observeArray(inserted)
         }
         return result
     }
