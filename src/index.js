@@ -1,10 +1,8 @@
 import { initMixin } from "./init"
 
 function Vue(options){
-    // debugger 
     this.$options = options
     this._init(options)
-
 }
 
 initMixin(Vue)

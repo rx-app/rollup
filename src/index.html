@@ -7,9 +7,22 @@
     <title>Document</title>
 </head>
 <body>
+    <div>文件需移动到dist下</div>
     <script src="vue.js"></script>
     <script>
-        console.log(Vue)
+        const vm = new Vue({
+            // data:{
+            //         name:'zf',
+            //         age:20,
+            //     }
+            data(){
+                return {
+                    name:'zf',
+                    age:20,
+                }
+            }
+        })
+
     </script>
 </body>
 </html>
