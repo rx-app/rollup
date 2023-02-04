@@ -11,10 +11,6 @@
     <script src="vue.js"></script>
     <script>
         const vm = new Vue({
-            // data:{
-            //         name:'zf',
-            //         age:20,
-            //     }
             data(){
                 return {
                     name:'zf',
@@ -22,7 +18,9 @@
                 }
             }
         })
-
+        vm._data.name = 'aaa'
+        console.log(vm._data.name)
+        
     </script>
 </body>
 </html>
