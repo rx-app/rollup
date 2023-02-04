@@ -18,13 +18,14 @@
                     address:{
                         num:30,
                         content:'回龙观'
-                    }
+                    },
+                    hobby:['eat','drink',{a:1}],
                 }
             }
         })
-        vm.address.num = 'aaa3a'
-        console.log(vm)
-        console.log(vm.address.num)
+        vm.hobby.unshift({b:2})
+        // vm.hobby[2].a //修改数组中的对象时，这个对象要被劫持
+        console.log(vm.hobby)
         
     </script>
 </body>
