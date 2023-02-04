@@ -1,3 +1,5 @@
+import { initState } from "./state";
+
 export function initMixin(Vue){  //为了把Vue传过来
     
     Vue.prototype._init = function(options){
@@ -9,16 +11,4 @@ export function initMixin(Vue){  //为了把Vue传过来
     }
 }
 
-function initState(vm){
-    const opts = vm.$options;
-    if(opts.data){
-        initData(vm)
-    }
-}
-function initData(vm){
-    let data = vm.$options.data
 
-    data = typeof data === 'function'?data.call(vm) : data
-    // debugger
-    console.log(data)
-}
