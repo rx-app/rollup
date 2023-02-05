@@ -3,6 +3,7 @@ import { newArrayProto } from "./array"
 class Observer{
     
     constructor(data){
+        debugger
         data.__ob__ = this  // 这里是是为了把observeArray这个方法传递过去
         if(Array.isArray(data)){
             data.__proto__ = newArrayProto  //如果是数组，先重写原型链上的push，ushift之类的方法。
@@ -38,6 +39,9 @@ export function defineReactive(target,key,value){
 export function observe(data){
     if(typeof data !== 'object' || data == null){
         return 
+    }
+    if(data.__ob__ instanceof Observer){ //observe函数返回的就是一个被属性劫持过后的对象，这里存在data.__ob__其实说明这个data执行过了构造函数，
+        return data.__ob__
     }
 
     return new Observer(data)
