@@ -22,7 +22,6 @@ methods.forEach(method=>{
         let inserted;
         let ob = this.__ob__;
         switch (method) {
-            case value:
                 case 'push':
                 case 'unshift':
                     inserted = args
