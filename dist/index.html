@@ -7,7 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    <div>文件需移动到dist下</div>
+    <div id="app">
+        <div>
+            {{name}}
+        </div>
+        <span>{{age}}</span>
+    </div>
     <script src="vue.js"></script>
     <script>
         const vm = new Vue({
@@ -21,11 +26,11 @@
                     },
                     hobby:['eat','drink',{a:1}],
                 }
-            }
+            },
+            el:'#app',
+            // template:'<div>hello<div>'
         })
-        vm.hobby.unshift({b:2})
-        // vm.hobby[2].a //修改数组中的对象时，这个对象要被劫持
-        console.log(vm.hobby)
+        // vm.$mount('#app')
         
     </script>
 </body>
