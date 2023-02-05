@@ -3,8 +3,13 @@ import { newArrayProto } from "./array"
 class Observer{
     
     constructor(data){
-        debugger
-        data.__ob__ = this  // 这里是是为了把observeArray这个方法传递过去
+        // debugger
+        // data.__ob__ = this  // 这里是是为了把observeArray这个方法传递过去
+
+        Object.defineProperty(data,'__ob__',{//这里的__ob__会挂在data下，遍历data的__ob__的时候，又会重新在这个__ob__下再挂一个__ob__，导致死循环
+            value:this,
+            enumerable:false, //不可枚举，不可遍历 Object.keys获取不到
+        })
         if(Array.isArray(data)){
             data.__proto__ = newArrayProto  //如果是数组，先重写原型链上的push，ushift之类的方法。
             this.observeArray(data)
