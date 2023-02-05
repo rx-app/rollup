@@ -7,7 +7,7 @@ const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s
 const startTagClose = /^\s*(\/?)>/;  // <div> <br/>
 
 function parseHTML(html){
-    function advance(n){
+    function advance(n){ //把读取过的片段删掉
         html = html.substring(n)
     }
     function parseStartTag(){
@@ -20,18 +20,12 @@ function parseHTML(html){
             advance(start[0].length)
 
             let attr,end
-            console.log(html)
-            //id="app">
-            //     <div style="color: red;">
-            //         {{name}} hellow
-            //     </div>
-            //     <span>{{age}}</span>
-            // </div>
             //如果不是开始标签的结束，则一直匹配  attribute正则匹配 id="app" 
             // end 是 >  或者 />
+            // 没匹配到结束标签，并且属性的正则匹配到了 ，说明存在属性attribute ，match里把attr存进去
             while(!( end=html.match(startTagClose) )&& (attr = html.match(attribute)) ){
                 advance(attr[0].length)
-                match.attrs.push({name:attr[1],value:attr[3] || attr[4] ||attr[5]})
+                match.attrs.push({name:attr[1],value:attr[3] || attr[4] ||attr[5] || true})
             }
             if(end){
                 advance(end[0].length)
@@ -50,8 +44,20 @@ function parseHTML(html){
     }
     while(html){
         let textEnd = html.indexOf('<')
-        if(textEnd == 0){  //开始标签
-            parseStartTag()
+        if(textEnd == 0){  //<开始，说明是开始标签或者结束标签
+            const startTagMatch = parseStartTag()
+            if(startTagMatch){  //标签节点截取完毕 startTagMatch 是 <div id='aaa'>
+                console.log(html)
+                continue 
+            }
+            // break  这个break是调试用的，让while只执行一次
+        }
+        if(textEnd>0){
+            let text = html.substring(0,textEnd)
+            if(text){
+
+            }
+
             break
         }
     }
