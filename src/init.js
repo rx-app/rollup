@@ -1,4 +1,4 @@
-import { complileToFunction } from "./compiler/index";
+import { complileToFunction } from "./compiler";
 import { initState } from "./state";
 
 export function initMixin(Vue){  //为了把Vue传过来
