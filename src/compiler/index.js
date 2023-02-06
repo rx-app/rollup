@@ -7,6 +7,53 @@ const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s
 const startTagClose = /^\s*(\/?)>/;  //  /> 或  >
 
 function parseHTML(html){
+    const ELEMENT_TYPE =1;
+    const TEXT_TYPE =3;
+    const stack =[]; 
+    let currrentParent;
+    let root;
+
+    function createASTElement(tag,attrs){
+        return {
+            tag,
+            type:ELEMENT_TYPE,
+            children:[],
+            attrs,
+            parent:null,
+        }
+    }
+
+
+    function start(tag,attrs){
+        let node = createASTElement(tag,attrs)
+        if(!root){
+            root = node;
+        }
+        if(currrentParent){
+            node.parent = currrentParent
+            currrentParent.children.push(node)
+        }
+        stack.push(node)
+        currrentParent = node
+        
+        // console.log(tag,attrs,'开始')
+    }
+    function chars(text){
+        text = text.replace(/\s/g,'')
+        text && currrentParent.children.push({ //文本直接放到currrentParent
+            type:TEXT_TYPE,
+            text,
+            parent:currrentParent
+        })
+        console.log(text,'文本')
+    }
+    function end(tag){
+        console.log(tag,'结束')
+        let node = stack.pop() // 可以和tag做对比， 进行校验
+        currrentParent = stack[stack.length-1]
+    }
+
+
     function advance(n){ //把读取过的片段删掉
         html = html.substring(n)
     }
@@ -40,11 +87,12 @@ function parseHTML(html){
         if(textEnd == 0){  //<开始，说明是 开始标签 或者 结束标签  <div> 或者 </div>
             const startTagMatch = parseStartTag()
             if(startTagMatch){  //标签节点截取完毕 startTagMatch 是 <div id='aaa'>
-                // console.log(html)
+                start(startTagMatch.tagName,startTagMatch.attrs)
                 continue 
             }
             let endTagMatch = html.match(endTag)
             if(endTagMatch){
+                end(endTagMatch[1])
                 advance(endTagMatch[0].length)
                 continue
             }
@@ -53,12 +101,13 @@ function parseHTML(html){
         if(textEnd>0){  // 剩下的html内容不是以 < 开头
             let text = html.substring(0,textEnd)
             if(text){
+                chars(text)
                 advance(text.length)
             }
             // break
         }
     }
-    console.log(html)
+    console.log(root)
 }
 
 
