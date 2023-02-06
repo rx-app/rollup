@@ -4,13 +4,13 @@ const startTagOpen = new RegExp(`^<${qnameCapture}`); // 他匹配到的分组�
 const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`);  // 匹配的是</xxxx>  最终匹配到的分组就是结束标签的名字
 const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;  // 匹配属性
 // 第一个分组就是属性的key value 就是 分组3 id=""/分组4 id=''/分组5 id
-const startTagClose = /^\s*(\/?)>/;  // <div> <br/>
+const startTagClose = /^\s*(\/?)>/;  //  /> 或  >
 
 function parseHTML(html){
     function advance(n){ //把读取过的片段删掉
         html = html.substring(n)
     }
-    function parseStartTag(){
+    function parseStartTag(){ // 处理类似这种 <div style="color: red;">
         const start = html.match(startTagOpen)
         if(start){
             const match = {
@@ -25,42 +25,40 @@ function parseHTML(html){
             // 没匹配到结束标签，并且属性的正则匹配到了 ，说明存在属性attribute ，match里把attr存进去
             while(!( end=html.match(startTagClose) )&& (attr = html.match(attribute)) ){
                 advance(attr[0].length)
-                match.attrs.push({name:attr[1],value:attr[3] || attr[4] ||attr[5] || true})
+                match.attrs.push({name:attr[1],value:attr[3] || attr[4] ||attr[5] })
             }
-            if(end){
-                advance(end[0].length)
+            if(end){ // 匹配到了结束标签 > 或 />  ，代表属性已经提取完了
+                advance(end[0].length)  // 结束标签不需要提取什么，直接删除
             }
-            console.log(match)
-            return match
+            // console.log(match)
+            return match  //
         }
-
-        
-
-
-        return false
-
-
-
+        return false  //return match说明是开始标签，false说明是结束标签
     }
     while(html){
         let textEnd = html.indexOf('<')
-        if(textEnd == 0){  //<开始，说明是开始标签或者结束标签
+        if(textEnd == 0){  //<开始，说明是 开始标签 或者 结束标签  <div> 或者 </div>
             const startTagMatch = parseStartTag()
             if(startTagMatch){  //标签节点截取完毕 startTagMatch 是 <div id='aaa'>
-                console.log(html)
+                // console.log(html)
                 continue 
+            }
+            let endTagMatch = html.match(endTag)
+            if(endTagMatch){
+                advance(endTagMatch[0].length)
+                continue
             }
             // break  这个break是调试用的，让while只执行一次
         }
-        if(textEnd>0){
+        if(textEnd>0){  // 剩下的html内容不是以 < 开头
             let text = html.substring(0,textEnd)
             if(text){
-
+                advance(text.length)
             }
-
-            break
+            // break
         }
     }
+    console.log(html)
 }
 
 
