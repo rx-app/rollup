@@ -66,7 +66,9 @@ export function complileToFunction(template){
     let ast = parseHTML(template)
     console.log(ast)
     // 2.生成render函数（render函数返回虚拟dom）
-
+    let code = codegen(ast)
+    code = `with(this){return code}`
+    let render = new Function(code)
   
     console.log( codegen(ast) )
     
