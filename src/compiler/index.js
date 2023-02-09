@@ -70,7 +70,7 @@ export function complileToFunction(template){
     code = `with(this){return code}`
     let render = new Function(code)
   
-    console.log( codegen(ast) )
+    console.log( codegen(ast) )  // 这个codegen(ast)执行两次就会有bug
     
 
     
