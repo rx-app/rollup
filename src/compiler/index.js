@@ -27,7 +27,28 @@ function gen(node){
     }else{
         // 文本
         let text = node.text
-        return ''
+        if(!defaultTagRE.test(text)){
+            return `_v(${JSON.stringify(text)})`
+        }else{
+            let tokens = []
+            let match;
+            defaultTagRE.lastIndex = 0
+            let lastIndex = 0
+            while(match = defaultTagRE.exec(text)){
+                let index = match.index;
+                if(index > lastIndex){
+                    tokens.push( JSON.stringify( text.slice(lastIndex,index) ) )
+                }
+                tokens.push(`_s(${match[1].trim()})`)
+                lastIndex = index + match[0].length
+            }
+            if(lastIndex<text.length){
+                tokens.push( JSON.stringify( text.slice(lastIndex) ) )
+            }
+            return `_v(${tokens.join('+')})`
+        }
+
+        
     }
 }
 
@@ -37,11 +58,7 @@ function genChidren(children){
 
 function codegen(ast){
     // debugger
-    let code = `_c(
-        '${ast.tag}',
-        ${ast.attrs.length>0?genProps(ast.attrs):'null'},
-        ${ast.children.length>0?genChidren(ast.children):''},
-    )`
+    let code = `_c('${ast.tag}',${ast.attrs.length>0?genProps(ast.attrs):'null'},${ast.children.length>0?genChidren(ast.children):''})`
     return code
 }
 export function complileToFunction(template){
