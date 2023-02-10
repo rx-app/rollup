@@ -10,7 +10,7 @@ export function initLifecycle(Vue){
 
 export function mountComponent(vm,el){
     // 1.调用render方法产生虚拟节点 虚拟DOM
-    vm._update( vm_render() )   
+    vm._update( vm._render() )   
 
     // 2.根据虚拟DOM产生真实DaL
 

@@ -1,4 +1,5 @@
 import { initMixin } from "./init"
+import { initLifecycle } from "./lifecycle"
 
 function Vue(options){
     this.$options = options
