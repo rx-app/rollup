@@ -1,4 +1,5 @@
 import { complileToFunction } from "./compiler";
+import { mountComponent } from "./lifecycle";
 import { initState } from "./state";
 
 export function initMixin(Vue){  //为了把Vue传过来
@@ -33,7 +34,8 @@ export function initMixin(Vue){  //为了把Vue传过来
                 ops.render = render
             }
         }
-        ops.render
+        // console.log( ops.render )
+        mountComponent(vm,el)
     }
 }
 

@@ -6,4 +6,8 @@ function Vue(options){
 }
 
 initMixin(Vue)
+initLifecycle(Vue)
+
+
+
 export default Vue

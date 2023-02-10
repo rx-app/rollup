@@ -64,13 +64,16 @@ function codegen(ast){
 export function complileToFunction(template){
     // 1.template -> ast 语法树
     let ast = parseHTML(template)
-    console.log(ast)
+    
     // 2.生成render函数（render函数返回虚拟dom）
     let code = codegen(ast)
-    code = `with(this){return code}`
+    code = `with(this){return ${code}}`
     let render = new Function(code)
+
+    return render
+
+
   
-    console.log( codegen(ast) )
     
 
     
