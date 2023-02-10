@@ -1,9 +1,24 @@
+import { createElementVnode, createTextVnode } from "./vdom"
+
 export function initLifecycle(Vue){
     Vue.prototype._update = function(){
         console.log('update')
     }
+    // _c('div',{},...children)
+    Vue.prototype._c = function(){
+       return createElementVnode(this,...arguments)
+    }
+    // _v(text)
+    Vue.prototype._v = function(){
+        return createTextVnode(this,...arguments)
+    }
+    Vue.prototype._s = function(value){
+        return JSON.stringify(value)
+    }
     Vue.prototype._render = function(){
-        console.log('render')
+        const vm = this
+        vm.$options.render.call(vm)
+
     }
 }
 

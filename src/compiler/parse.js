@@ -45,10 +45,10 @@ export function parseHTML(html){
             text,
             parent:currrentParent
         })
-        console.log(text,'文本')
+        // console.log(text,'文本')
     }
     function end(tag){
-        console.log(tag,'结束')
+        // console.log(tag,'结束')
         let node = stack.pop() // 可以和tag做对比， 进行校验
         currrentParent = stack[stack.length-1]
     }
