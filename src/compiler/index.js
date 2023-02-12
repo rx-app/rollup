@@ -71,7 +71,7 @@ export function complileToFunction(template){
     let code = codegen(ast)
     code = `with(this){return ${code}}`
     // debugger
-    console.log(code)
+    // console.log(code)
     let render = new Function(code)
 
     return render

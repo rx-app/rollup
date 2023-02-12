@@ -2,7 +2,13 @@ import { createElementVnode, createTextVnode } from "./vdom"
 
 export function initLifecycle(Vue){
     Vue.prototype._update = function(vnode){
-        console.log('update',vnode)
+        const vm = this;
+        const el = vm.$el;
+        console.log(vnode,el)
+
+
+        // patch 既有初始化共功能，又有更新的功能
+        // patch()
     }
     // _c('div',{},...children)
     Vue.prototype._c = function(){
@@ -13,19 +19,18 @@ export function initLifecycle(Vue){
         return createTextVnode(this,...arguments)
     }
     Vue.prototype._s = function(value){
-        // return value  //??? 这个地方直接写return value，不用 JSON.stringify 似乎也可以
-        if(typeof value !== 'object'){
-            return value
-        }
         return JSON.stringify(value)
     }
-    Vue.prototype._render = function(){  //返回一个vnode
-        return this.$options.render.call(this)  //这里的render函数是complileToFunction的返回值
+    Vue.prototype._render = function(){
+        const vm = this
+        return vm.$options.render.call(vm)
+
     }
 }
 
 
 export function mountComponent(vm,el){
+    vm.$el = el
     // 1.调用render方法产生虚拟节点 虚拟DOM
     vm._update( vm._render() )   
 

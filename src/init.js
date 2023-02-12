@@ -34,7 +34,7 @@ export function initMixin(Vue){  //为了把Vue传过来
                 ops.render = render
             }
         }
-        console.log( ops.render )
+        // console.log( ops.render )
         mountComponent(vm,el)
     }
 }
