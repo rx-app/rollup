@@ -7,6 +7,7 @@ function genProps(attrs){
         let attr=attrs[i]
         if(attr.name==='style'){
             // color:red => {color:'red'}
+            // debugger
             let obj = {}
             attr.value.split(';').forEach(item=>{
                 let [key,value] = item.split(':')
@@ -21,13 +22,13 @@ function genProps(attrs){
 }
 
 const defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g; // {{ asdsadsa }}  匹配到的内容就是我们表达式的变量
-function gen(node){
+function gen(node){ //处理一个子节点
     if(node.type === 1){ //元素节点
         return codegen(node)
     }else{
         // 文本
         let text = node.text
-        if(!defaultTagRE.test(text)){
+        if(!defaultTagRE.test(text)){ // 不包含{{ xxx }}
             return `_v(${JSON.stringify(text)})`
         }else{
             let tokens = []
@@ -39,6 +40,7 @@ function gen(node){
                 if(index > lastIndex){
                     tokens.push( JSON.stringify( text.slice(lastIndex,index) ) )
                 }
+                // debugger
                 tokens.push(`_s(${match[1].trim()})`)
                 lastIndex = index + match[0].length
             }
@@ -52,11 +54,11 @@ function gen(node){
     }
 }
 
-function genChidren(children){
+function genChidren(children){ //处理所有的子节点
     return children.map( child=>gen(child) ).join(',')
 }
 
-function codegen(ast){
+function codegen(ast){   //处理元素节点
     // debugger
     let code = `_c('${ast.tag}',${ast.attrs.length>0?genProps(ast.attrs):'null'},${ast.children.length>0?genChidren(ast.children):''})`
     return code
@@ -68,6 +70,8 @@ export function complileToFunction(template){
     // 2.生成render函数（render函数返回虚拟dom）
     let code = codegen(ast)
     code = `with(this){return ${code}}`
+    // debugger
+    console.log(code)
     let render = new Function(code)
 
     return render

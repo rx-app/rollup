@@ -1,5 +1,6 @@
 // h()  _c()
 export function createElementVnode(vm,tag,data={},...children){
+    data = data || {} //??? 默认参数不生效
     let key = data.key
     if(key){
         delete data.key

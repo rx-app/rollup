@@ -1,8 +1,8 @@
 import { createElementVnode, createTextVnode } from "./vdom"
 
 export function initLifecycle(Vue){
-    Vue.prototype._update = function(){
-        console.log('update')
+    Vue.prototype._update = function(vnode){
+        console.log('update',vnode)
     }
     // _c('div',{},...children)
     Vue.prototype._c = function(){
@@ -13,12 +13,14 @@ export function initLifecycle(Vue){
         return createTextVnode(this,...arguments)
     }
     Vue.prototype._s = function(value){
+        // return value  //??? 这个地方直接写return value，不用 JSON.stringify 似乎也可以
+        if(typeof value !== 'object'){
+            return value
+        }
         return JSON.stringify(value)
     }
-    Vue.prototype._render = function(){
-        const vm = this
-        vm.$options.render.call(vm)
-
+    Vue.prototype._render = function(){  //返回一个vnode
+        return this.$options.render.call(this)  //这里的render函数是complileToFunction的返回值
     }
 }
 
