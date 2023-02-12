@@ -11,6 +11,7 @@ function createElm(vnode){
     }else{
         vnode.el = document.createTextNode(text)
     }
+    return vnode.el
 }
 function patchProps(el,props){
     for(let key in props){
@@ -56,6 +57,10 @@ export function initLifecycle(Vue){
         return createTextVnode(this,...arguments)
     }
     Vue.prototype._s = function(value){
+        // return value  //??? 这个地方直接写return value，不用 JSON.stringify 似乎也可以
+        if(typeof value !== 'object'){
+            return value
+        }
         return JSON.stringify(value)
     }
     Vue.prototype._render = function(){
