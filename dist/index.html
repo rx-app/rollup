@@ -8,10 +8,10 @@
 </head>
 <body>
     <div id="app" style="color:red;background: yellow;">
-        <div key="123" style="color: red;">
-            {{name}} hellow {{address.num}} hellow
+        <div key="123" style="color: green;">
+            {{name}} hellow {{age}} hellow
         </div>
-        <span>{{age}}</span>
+        <li>world</li>
     </div>
     <script src="vue.js"></script>
     <script>
@@ -30,7 +30,17 @@
             el:'#app',
             // template:'<div>hello<div>'
         })
-        // vm.$mount('#app')
+        // vm.$mount('#app')   写了el就不用写$mount了
+
+        setTimeout(()=>{
+            vm.name='jw'
+            vm.age=30
+
+            let vdom = vm._render()
+            vm._update(vdom)
+        },2000)
+
+
         
     </script>
 </body>

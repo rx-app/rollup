@@ -19,8 +19,9 @@ function patchProps(el,props){
             for(let styleName in props.style){
                 el.style[styleName] = props.style[styleName]
             }
+        }else{
+            el.setAttribute(key,props[key])
         }
-        el.setAttribute(key,props[key])
     }
 }
 
@@ -31,8 +32,12 @@ function patch(oldVnode,vnode){
         const elm = oldVnode
 
         const parentElm = elm.parentNode
-        let newElement =  createElm(vnode)
-        console.log(newElement)
+        let newElm =  createElm(vnode)
+        parentElm.insertBefore(newElm,elm.nextSibling)
+        parentElm.removeChild(elm)
+
+        return newElm
+
     }else{//旧节点是个虚拟dom
         //  diff算法
     }
@@ -46,7 +51,7 @@ export function initLifecycle(Vue){
 
 
         // patch 既有初始化共功能，又有更新的逻辑
-        patch(el,vnode)
+        vm.$el = patch(el,vnode) //更新完成后，这个$el变成了下次更新使用时的旧节点
     }
     // _c('div',{},...children)
     Vue.prototype._c = function(){
