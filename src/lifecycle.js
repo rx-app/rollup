@@ -1,5 +1,42 @@
 import { createElementVnode, createTextVnode } from "./vdom"
 
+function createElm(vnode){ 
+    let {tag,data,children,text} = vnode
+    if(typeof tag === 'string'){ // 标签 ，文本节点这里是undefind
+        vnode.el = document.createElement(tag) //把真实节点挂载到vnode下，后续如果修改了属性
+        patchProps(vnode.el,data) //处理属性节点
+        children.forEach(child=>{
+            vnode.el.appendChild(createElm(child))
+        })
+    }else{
+        vnode.el = document.createTextNode(text)
+    }
+}
+function patchProps(el,props){
+    for(let key in props){
+        if(key == 'style'){
+            for(let styleName in props.style){
+                el.style[styleName] = props.style[styleName]
+            }
+        }
+        el.setAttribute(key,props[key])
+    }
+}
+
+function patch(oldVnode,vnode){
+    const isRealElement = oldVnode.nodeType
+
+    if(isRealElement){
+        const elm = oldVnode
+
+        const parentElm = elm.parentNode
+        let newElement =  createElm(vnode)
+        console.log(newElement)
+    }else{//旧节点是个虚拟dom
+        //  diff算法
+    }
+}
+
 export function initLifecycle(Vue){
     Vue.prototype._update = function(vnode){
         const vm = this;
@@ -7,8 +44,8 @@ export function initLifecycle(Vue){
         console.log(vnode,el)
 
 
-        // patch 既有初始化共功能，又有更新的功能
-        // patch()
+        // patch 既有初始化共功能，又有更新的逻辑
+        patch(el,vnode)
     }
     // _c('div',{},...children)
     Vue.prototype._c = function(){
