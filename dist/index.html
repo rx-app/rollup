@@ -31,17 +31,25 @@
         })
         // vm.$mount('#app')   写了el就不用写$mount了
 
-        setTimeout(()=>{
-            vm.name='jw'
-            vm.age=30
-            vm.age=40
-            vm.age=50
-            vm.age=60
+        // setTimeout(()=>{
+        //     vm.name='jw'
+        //     vm.age=30
+        //     vm.age=40
+        //     vm.age=50
+        //     vm.age=60
 
-            // vm.address = {}
-            // let vdom = vm._render()
-            // vm._update(vdom)
-        },2000)
+        //     // vm.address = {}
+        //     // let vdom = vm._render()
+        //     // vm._update(vdom)
+        // },2000)
+
+        vm.name = 'jw'
+        vm.$nextTick( ()=>{
+            console.log(app.innerHTML)
+        } )
+        // Promise.resolve().then( ()=>{
+        //     console.log(app.innerHTML)
+        // } )
 
 
         

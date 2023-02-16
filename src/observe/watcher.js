@@ -27,7 +27,7 @@ class Watcher{
     update(){//重新渲染
         // console.log('update')
         // this.get()  
-        queueUpdate(this)
+        queueWatcher(this)
         // 去重 防止多次重复渲染
     }
     run(){
@@ -52,20 +52,37 @@ function reflushSchedulerQueue(){
     
 }
 
-function queueUpdate(watcher){
+function queueWatcher(watcher){
     let id = watcher.id
     if(!has[id]){
         queue.push(watcher)
         has[id] = true
         // 不管update执行多少次，只执行一轮刷新操作
         if(!pending){
-            setTimeout(reflushSchedulerQueue, 0);
+            nextTick(reflushSchedulerQueue, 0);
             pending = true
         }
     }
     
 }
 
+let callbacks = []
+let waiting = false
+function relushCallbacks(){
+    waiting = false
+    let cbs = callbacks.slice(0)
+    callbacks = []
+    cbs.forEach(cb=>cb()) //按照顺序依次执行
+}
+export function nextTick(cb){
+    callbacks.push(cb)  //维护nextTick中的callback函数
+    if(!waiting){
+        setTimeout(() => {
+            relushCallbacks()//最后一起刷新
+        }, 0);
+        waiting = true
+    }
+}
 
 
 export default Watcher
