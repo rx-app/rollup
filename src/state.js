@@ -8,7 +8,7 @@ export function initState(vm){
 }
 function proxy(vm,target,key){
 
-    Object.defineProperty(vm,key,{
+    Object.defineProperty(vm,key,{  
         get(){
             return vm[target][key];
         },
@@ -27,7 +27,7 @@ function initData(vm){
     observe(data)
 
     for(let key in data){
-        proxy(vm,'_data',key)
+        proxy(vm,'_data',key) //实现 vm.xxx => vm._data.xxx
     }
     
 }

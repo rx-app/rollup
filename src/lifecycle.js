@@ -48,7 +48,7 @@ export function initLifecycle(Vue){
     Vue.prototype._update = function(vnode){
         const vm = this;
         const el = vm.$el;
-        console.log(vnode,el)
+        // console.log(vnode,el)
 
 
         // patch 既有初始化共功能，又有更新的逻辑
@@ -83,8 +83,9 @@ export function mountComponent(vm,el){
     const updateComponent = ()=>{
         vm._update( vm._render() )   
     }
-    debugger
-    new Watcher(vm,updateComponent,true) //true表示渲染watcher
+    // debugger
+    let w = new Watcher(vm,updateComponent,true) //true表示渲染watcher
+    // console.log(w)
     
 
     // vm._update( vm._render() )   

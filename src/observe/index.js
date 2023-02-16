@@ -42,6 +42,7 @@ export function defineReactive(target,key,value){
             if(newValue === value) return
             observe(newValue)  // 比如： vm.address = {num:20}
             value = newValue
+            dep.notify()
         },
     })
 }
