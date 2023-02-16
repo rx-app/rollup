@@ -9,9 +9,9 @@
 <body>
     <div id="app" style="color:red;background: yellow;">
         <div key="123" style="color: green;">
-            {{name}} hellow {{age}} hellow
+            {{name}} - {{age}} -{{name}} 
         </div>
-        <li>world</li>
+        <li>{{age}}</li>
     </div>
     <script src="vue.js"></script>
     <script>
@@ -36,8 +36,8 @@
             vm.name='jw'
             vm.age=30
 
-            let vdom = vm._render()
-            vm._update(vdom)
+            // let vdom = vm._render()
+            // vm._update(vdom)
         },2000)
 
 
