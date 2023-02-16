@@ -31,6 +31,7 @@ class Watcher{
         // 去重 防止多次重复渲染
     }
     run(){
+        console.log('run')
         this.get()
     }
     
@@ -46,7 +47,7 @@ function reflushSchedulerQueue(){
     queue = []
     has = {}
     pending = false
-    flushQueue.forEach(q=>q.run())
+    flushQueue.forEach(q=>q.run()) // 在刷新的过程中可能还有新的watcher，重新放到queue中
 
     
 }
