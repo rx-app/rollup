@@ -42,11 +42,12 @@ let pending = false; // 防抖
 
 function reflushSchedulerQueue(){
     let flushQueue = queue.slice(0) //复制一份
-    flushQueue.forEach(q=>q.run())
+    
 
     queue = []
     has = {}
     pending = false
+    flushQueue.forEach(q=>q.run())
 }
 
 function queueUpdate(watcher){
