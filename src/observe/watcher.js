@@ -68,18 +68,43 @@ function queueWatcher(watcher){
 
 let callbacks = []
 let waiting = false
-function relushCallbacks(){
+function reflushCallbacks(){
     waiting = false
     let cbs = callbacks.slice(0)
     callbacks = []
     cbs.forEach(cb=>cb()) //按照顺序依次执行
 }
+
+// nextTick 没有直接使用某个api 而是采用优雅降级的方式
+// 内部先采用的是promise (ie不兼容) Mutationobserver(h5的api) 可以考虑ie专享的 setImmediate   最后setTimeout
+let timeFunc
+if(Promise){
+    timeFunc = ()=>{
+        Promise.resolve().then(reflushCallbacks)
+    }
+}else if(MutationObserver){
+    let observer = new MutationObserver(reflushCallbacks)
+    let textNode = document.createTextNode(1)
+    observer.observe(textNode,{characterData:true})
+    timeFunc = ()=>{
+        textNode.textContent = 2
+    }
+}else if(setImmediate){
+    timeFunc = ()=>{
+        setImmediate(reflushCallbacks)
+    }
+}else{
+    timeFunc = ()=>{
+        setTimeout(reflushCallbacks, 0)
+    }
+}
 export function nextTick(cb){
     callbacks.push(cb)  //维护nextTick中的callback函数
     if(!waiting){
-        setTimeout(() => {
-            relushCallbacks()//最后一起刷新
-        }, 0);
+        // setTimeout(() => {
+        //     reflushCallbacks()//最后一起刷新
+        // }, 0);
+        timeFunc()
         waiting = true
     }
 }
