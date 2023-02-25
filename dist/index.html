@@ -20,32 +20,31 @@
                 console.log('mixin-created')
             }
         })
-        Vue.mixin({
-            created(){
-                console.log('mixin-created')
-            }
-        })
+        // Vue.mixin({
+        //     created(){
+        //         console.log('mixin-created')
+        //     }
+        // })
         console.log(Vue.options)
 
 
-        // const vm = new Vue({
-        //     data(){
-        //         return {
-        //             name:'zf',
-        //             age:20,
-        //             address:{
-        //                 num:30,
-        //                 content:'回龙观'
-        //             },
-        //             hobby:['eat','drink',{a:1}],
-        //         }
-        //     },
-        //     el:'#app',
-        //     created(){
-        //         console.log(this.test)
-        //         console.log('before')
-        //     }
-        // })
+        const vm = new Vue({
+            data(){
+                return {
+                    name:'zf',
+                    age:20,
+                    address:{
+                        num:30,
+                        content:'回龙观'
+                    },
+                    hobby:['eat','drink',{a:1}],
+                }
+            },
+            el:'#app',
+            // created(){
+            //     console.log('before')
+            // }
+        })
        
 
 
