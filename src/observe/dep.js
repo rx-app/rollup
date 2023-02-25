@@ -19,4 +19,18 @@ class Dep{
 
 Dep.target =null
 // Dep.watcher = Dep.target
+
+
+// 维护成栈 本来是Dep.target = this  是单个的，改成一个栈
+let stack = []
+export function pushTarget(watcher){
+    stack.push(watcher)
+    Dep.target = watcher
+}
+export function popTarget(){
+    stack.pop()
+    Dep.target = stack[stack.length - 1]
+}
+
+
 export default Dep

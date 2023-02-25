@@ -1,4 +1,4 @@
-import Dep from "./dep"
+import Dep, { popTarget, pushTarget } from "./dep"
 
 let id = 0
 
@@ -7,6 +7,7 @@ class Watcher{
         this.id = id++
         this.renderWatcher = options//渲染watcher
         this.getter = fn
+        
         this.deps= []
         this.depsId=new Set()
         this.get()
@@ -20,9 +21,9 @@ class Watcher{
         }
     }
     get(){
-        Dep.target = this
+        pushTarget(this) //Dep.target = this
         this.getter()
-        Dep.target = null
+        popTarget()// Dep.target = null
     }
     update(){//重新渲染
         // console.log('update')
@@ -31,7 +32,7 @@ class Watcher{
         // 去重 防止多次重复渲染
     }
     run(){
-        console.log('run')
+        // console.log('run')
         this.get()
     }
     

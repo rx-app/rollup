@@ -1,9 +1,13 @@
 import { observe } from "./observe/index";
+import Watcher from "./observe/watcher";
 
 export function initState(vm){
     const opts = vm.$options;
     if(opts.data){
         initData(vm)
+    }
+    if(opts.computed){
+        initComputed(vm)
     }
 }
 function proxy(vm,target,key){
@@ -30,4 +34,28 @@ function initData(vm){
         proxy(vm,'_data',key) //实现 vm.xxx => vm._data.xxx
     }
     
+}
+function initComputed(vm){
+    const computed = vm.$options.computed
+    // console.log(computed)
+    let watchers = {}
+    for(let key in computed){
+        let userDef = computed[key]
+
+        // new Watcher(vm,userDef)
+        let fn = typeof userDef === 'function' ? userDef:userDef.get
+
+        watchers[key] = new Watcher()
+        
+        defineComputed(vm,key,userDef)
+    }
+}
+
+function defineComputed(target,key,userDef){
+    const getter = typeof userDef === 'function'? userDef : userDef.get
+    const setter = userDef.set || (()=>{})
+    Object.defineProperty(target,key,{
+        get:getter,
+        set:setter,
+    })
 }
