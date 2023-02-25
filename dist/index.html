@@ -13,43 +13,41 @@
         </div>
     </div>
     <script src="vue.js"></script>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.js"></script> -->
     <script>
-        const vm = new Vue({
-            data(){
-                return {
-                    name:'zf',
-                    age:20,
-                    address:{
-                        num:30,
-                        content:'回龙观'
-                    },
-                    hobby:['eat','drink',{a:1}],
-                }
-            },
-            el:'#app',
-            // template:'<div>hello<div>'
+        Vue.mixin({
+            created(){
+                console.log('mixin-created')
+            }
         })
-        // vm.$mount('#app')   写了el就不用写$mount了
+        Vue.mixin({
+            created(){
+                console.log('mixin-created')
+            }
+        })
+        console.log(Vue.options)
 
-        // setTimeout(()=>{
-        //     vm.name='jw'
-        //     vm.age=30
-        //     vm.age=40
-        //     vm.age=50
-        //     vm.age=60
 
-        //     // vm.address = {}
-        //     // let vdom = vm._render()
-        //     // vm._update(vdom)
-        // },2000)
+        // const vm = new Vue({
+        //     data(){
+        //         return {
+        //             name:'zf',
+        //             age:20,
+        //             address:{
+        //                 num:30,
+        //                 content:'回龙观'
+        //             },
+        //             hobby:['eat','drink',{a:1}],
+        //         }
+        //     },
+        //     el:'#app',
+        //     created(){
+        //         console.log(this.test)
+        //         console.log('before')
+        //     }
+        // })
+       
 
-        vm.name = 'jw'
-        vm.$nextTick( ()=>{
-            console.log(app.innerHTML)
-        } )
-        // Promise.resolve().then( ()=>{
-        //     console.log(app.innerHTML)
-        // } )
 
 
         
