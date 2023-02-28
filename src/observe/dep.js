@@ -4,10 +4,10 @@ class Dep{
         this.id= id++
         this.subs=[] //当前存放当前属性对应的watcher有哪些
     }
-    depand(){
+    depend(){
         // this.subs.push(Dep.target)  //这样写会重复添加watcher
         // debugger
-        Dep.target.addDep(this)
+        Dep.target.addDep(this) 
     }
     addSub(watcher){
         this.subs.push(watcher)

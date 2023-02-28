@@ -35,11 +35,20 @@ class Watcher{
         popTarget()// Dep.target = null
         return value
     }
+    depend(){
+        let i = this.deps.length
+        while(i--){
+            this.deps[i].depend()
+        }
+    }
     update(){//重新渲染
-        // console.log('update')
-        // this.get()  
-        queueWatcher(this)
-        // 去重 防止多次重复渲染
+        if(this.lazy){  // 说明是计算属性的watcher
+            this.dirty = true 
+        }else{
+            queueWatcher(this)
+            // 去重 防止多次重复渲染
+        }
+        
     }
     run(){
         // console.log('run')

@@ -33,7 +33,7 @@ export function defineReactive(target,key,value){
     Object.defineProperty(target,key,{
         get(){
             if(Dep.target){
-                dep.depand()
+                dep.depend()
             }
             return value
         },
