@@ -9,7 +9,7 @@
 <body>
     <div id="app" style="color:red;background: yellow;">
         <div key="123" style="color: green;">
-           {{fullname}}  
+            {{fullname}}  {{fullname}} {{fullname}} 
         </div>
     </div>
     <script src="vue.js"></script>
@@ -24,7 +24,7 @@
             computed:{
                 fullname:{
                     get(){
-                        console.log('a')
+                        // console.log('a')
                         return this.firstname + this.lastname
                     },
                     set(newVal){
@@ -34,6 +34,7 @@
             }
         })
         setTimeout(() => {
+            console.log('edit')
             vm.firstname = '123'
         }, 1000);
 

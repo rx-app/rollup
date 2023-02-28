@@ -38,14 +38,14 @@ function initData(vm){
 function initComputed(vm){
     const computed = vm.$options.computed
     // console.log(computed)
-    let watchers = {}
+    let watchers = vm._computedWatchers = {}
     for(let key in computed){
         let userDef = computed[key]
 
         // new Watcher(vm,userDef)
         let fn = typeof userDef === 'function' ? userDef:userDef.get
 
-        watchers[key] = new Watcher()
+        watchers[key] = new Watcher(vm,fn,{lazy:true})
         
         defineComputed(vm,key,userDef)
     }
@@ -55,7 +55,18 @@ function defineComputed(target,key,userDef){
     const getter = typeof userDef === 'function'? userDef : userDef.get
     const setter = userDef.set || (()=>{})
     Object.defineProperty(target,key,{
-        get:getter,
+        get:createComputedGetter(key),
         set:setter,
     })
+    
+}
+
+function createComputedGetter(key){
+    return function(){
+        const watcher = this._computedWatchers[key]  //这里的this指向vm
+        if(watcher.dirty){
+            watcher.evaluate() 
+        }
+        return watcher.value
+    }
 }

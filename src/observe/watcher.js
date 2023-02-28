@@ -10,7 +10,12 @@ class Watcher{
         
         this.deps= []
         this.depsId=new Set()
-        this.get()
+
+        this.lazy = options.lazy
+        this.dirty = this.lazy
+        this.vm = vm
+
+        this.lazy ?undefined : this.get() //有lazy属性说明这个是computed watcher，一开始不执行get（）函数 ， 因为computed 的new watcher阶段只是生成watcher，并不是取值，渲染watcher一上来就需要渲染的
     }
     addDep(dep){
         let id = dep.id
@@ -20,10 +25,15 @@ class Watcher{
             dep.addSub(this)
         }
     }
+    evaluate(){
+        this.value  = this.get() 
+        this.dirty = false
+    }
     get(){
-        pushTarget(this) //Dep.target = this
-        this.getter()
+        pushTarget(this) //Dep.target = this  
+        let value = this.getter.call(this.vm)
         popTarget()// Dep.target = null
+        return value
     }
     update(){//重新渲染
         // console.log('update')
