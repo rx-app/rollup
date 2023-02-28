@@ -36,9 +36,9 @@ class Watcher{
         return value
     }
     depend(){
-        let i = this.deps.length
+        let i = this.deps.length  //这里面的this.deps存的是计算属性的依赖（firstName和lastName）
         while(i--){
-            this.deps[i].depend()
+            this.deps[i].depend() //调Dep的depend会让dep和watcher相互收集依赖
         }
     }
     update(){//重新渲染
