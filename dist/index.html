@@ -18,10 +18,16 @@
         const vm = new Vue({
             el:'#app',
             data:{
-                arr:[1,2,3,{a:1}]
+                arr:[1,2,3,{a:1},['a','b']],
+                a:{a:1}
             },
         })
-        vm.arr.push(100,100,100)
+        // vm.arr.push(100,100,100)
+        vm.arr[4].push('c')
+
+        // vm.a.b=2
+        // debugger
+        // vm.a.__ob__.dep.notify()
 
 
 
