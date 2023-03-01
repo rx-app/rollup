@@ -1,24 +1,31 @@
+import { complileToFunction } from "./compiler"
 import { initGlobleAPI } from "./globalAPI"
 import { initMixin } from "./init"
 import { initLifecycle } from "./lifecycle"
-import Watcher, { nextTick } from "./observe/watcher"
+import { initStateMixin } from "./state"
 
 function Vue(options){
     this.$options = options
     this._init(options)
 }
 
-Vue.prototype.$nextTick = nextTick
+
 initMixin(Vue)
 initLifecycle(Vue)
 initGlobleAPI(Vue)
+initStateMixin(Vue)
 
 
-Vue.prototype.$watch = function(expOrFn,cb,options={}){
-    new Watcher(this,expOrFn,{user:true},cb)
-    // console.log(expOrFn,cb,options)
-}
+// ------------------测试代码-------------------
+let render1 = complileToFunction(`<div>{{name}}</div>`)
+let vm1 = new Vue({data:{name:'zf'}})
+let prevVnode = render1.call(vm1)
 
+let render2 = complileToFunction(`<span>{{name}}</span>`)
+let vm2 = new Vue({data:{name:'zf'}})
+let nextVnode = render2.call(vm2)
+
+// console.log(prevVnode,nextVnode)
 
 
 export default Vue
