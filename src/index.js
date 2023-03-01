@@ -14,5 +14,10 @@ initLifecycle(Vue)
 initGlobleAPI(Vue)
 
 
+Vue.prototype.$watch = function(expOrFn,cb,options={}){
+
+}
+
+
 
 export default Vue
