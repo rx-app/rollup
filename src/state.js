@@ -27,11 +27,10 @@ function initWatch(vm){
             createWatcher(vm,key,handler)
         }
     }
-    console.log(watch)
 }
 
 function createWatcher(vm,key,handler){
-    if(typeof handler === 'string'){
+    if(typeof handler === 'string'){ // watch{ firstName:'fn' }  取method的fn的情况
         handler = vm[handler]
     }
     return vm.$watch(key,handler)

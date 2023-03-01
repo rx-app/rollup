@@ -3,19 +3,28 @@ import Dep, { popTarget, pushTarget } from "./dep"
 let id = 0
 
 class Watcher{
-    constructor(vm,fn,options){
+    constructor(vm,exprOrFn,options,cb){
         this.id = id++
         this.renderWatcher = options//渲染watcher
-        this.getter = fn
+
+        if(typeof exprOrFn == 'string' ){  // exp :'firstname'  fn: ()=>vm.firstname
+            this.getter = function(){
+                return vm[exprOrFn]
+            }
+        }else{
+            
+            this.getter = exprOrFn
+        }
         
         this.deps= []
         this.depsId=new Set()
-
         this.lazy = options.lazy
+        this.cb = cb
         this.dirty = this.lazy
         this.vm = vm
+        this.user = options.user
 
-        this.lazy ?undefined : this.get() //有lazy属性说明这个是computed watcher，一开始不执行get（）函数 ， 因为computed 的new watcher阶段只是生成watcher，并不是取值，渲染watcher一上来就需要渲染的
+        this.value = this.lazy ?undefined : this.get() //有lazy属性说明这个是computed watcher，一开始不执行get（）函数 ， 因为computed 的new watcher阶段只是生成watcher，并不是取值，渲染watcher一上来就需要渲染的
     }
     addDep(dep){
         let id = dep.id
@@ -52,7 +61,11 @@ class Watcher{
     }
     run(){
         // console.log('run')
-        this.get()
+        let oldValue = this.value
+        let newValue = this.get()
+        if(this.user){
+            this.cb.call(this.vm,newValue,oldValue)
+        }
     }
     
 }

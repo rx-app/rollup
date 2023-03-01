@@ -1,7 +1,7 @@
 import { initGlobleAPI } from "./globalAPI"
 import { initMixin } from "./init"
 import { initLifecycle } from "./lifecycle"
-import { nextTick } from "./observe/watcher"
+import Watcher, { nextTick } from "./observe/watcher"
 
 function Vue(options){
     this.$options = options
@@ -15,7 +15,8 @@ initGlobleAPI(Vue)
 
 
 Vue.prototype.$watch = function(expOrFn,cb,options={}){
-
+    new Watcher(this,expOrFn,{user:true},cb)
+    // console.log(expOrFn,cb,options)
 }
 
 
