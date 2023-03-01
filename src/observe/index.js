@@ -28,6 +28,17 @@ class Observer{
         data.forEach(item=>observe(item))
     }
 }
+
+function dependArray(value){
+    for(let i=0;i<value.length; i++){
+        let current = value[i]
+        current.__ob__?.dep.depend()
+        if(Array.isArray(current)){
+            dependArray(current)
+        }
+    }
+
+}
 export function defineReactive(target,key,value){
     let childOb = observe(value) //如果是嵌套了对象，再劫持一遍 （是否对象的判断在observe函数里存在了，所以这里无需判断）
     let dep = new Dep()
@@ -37,6 +48,9 @@ export function defineReactive(target,key,value){
                 dep.depend()
                 if(childOb){//p:{name:'aa'} 之前的依赖收集是对p属性的，在他的get阶段,现在，如果这个p是一个对象(childOb有值，说明是一个对象)，会对对象本身（即 {name:a}）做依赖收集
                     childOb.dep.depend() 
+                    if(Array.isArray(value)){
+                        dependArray(value)
+                    }
                 }
             }
             return value
