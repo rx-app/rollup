@@ -6,6 +6,7 @@ class Observer{
     constructor(data){
         // debugger
         // data.__ob__ = this  // 这里是是为了把observeArray这个方法传递过去
+        this.dep = new Dep()
 
         Object.defineProperty(data,'__ob__',{//这里的__ob__会挂在data下，遍历data的__ob__的时候，又会重新在这个__ob__下再挂一个__ob__，导致死循环
             value:this,
@@ -28,12 +29,15 @@ class Observer{
     }
 }
 export function defineReactive(target,key,value){
-    observe(value) //如果是嵌套了对象，再劫持一遍 （是否对象的判断在observe函数里存在了，所以这里无需判断）
+    let childOb = observe(value) //如果是嵌套了对象，再劫持一遍 （是否对象的判断在observe函数里存在了，所以这里无需判断）
     let dep = new Dep()
     Object.defineProperty(target,key,{
         get(){
             if(Dep.target){
                 dep.depend()
+                if(childOb){//p:{name:'aa'} 之前的依赖收集是对p属性的，在他的get阶段,现在，如果这个p是一个对象(childOb有值，说明是一个对象)，会对对象本身（即 {name:a}）做依赖收集
+                    childOb.dep.depend() 
+                }
             }
             return value
         },
