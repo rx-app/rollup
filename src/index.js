@@ -3,6 +3,7 @@ import { initGlobleAPI } from "./globalAPI"
 import { initMixin } from "./init"
 import { initLifecycle } from "./lifecycle"
 import { initStateMixin } from "./state"
+import { createElm } from "./vdom/patch"
 
 function Vue(options){
     this.$options = options
@@ -17,15 +18,24 @@ initStateMixin(Vue)
 
 
 // ------------------测试代码-------------------
-let render1 = complileToFunction(`<div>{{name}}</div>`)
+let render1 = complileToFunction(`<li>{{name}}</li>`)
 let vm1 = new Vue({data:{name:'zf'}})
 let prevVnode = render1.call(vm1)
+
+let el = createElm(prevVnode)
+document.body.appendChild(el)
 
 let render2 = complileToFunction(`<span>{{name}}</span>`)
 let vm2 = new Vue({data:{name:'zf'}})
 let nextVnode = render2.call(vm2)
 
-// console.log(prevVnode,nextVnode)
+let newEl = createElm(nextVnode)
+setTimeout(() => {
+    el.parentNode.replaceChild(newEl,el)
+}, 1000);
+
+
+console.log(prevVnode,nextVnode)
 
 
 export default Vue
