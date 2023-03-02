@@ -1,3 +1,5 @@
+import { isSameVnode } from "."
+
 export function createElm(vnode){ 
     let {tag,data,children,text} = vnode
     if(typeof tag === 'string'){ // 标签 ，文本节点这里是undefind
@@ -36,7 +38,12 @@ export function patch(oldVnode,vnode){
 
         return newElm
 
-    }else{//旧节点是个虚拟dom
-        //  diff算法
+    }else{
+        // 1.两个节点不是同一个节点  直接删除老的换上新的  （没有比对了）
+        // 2.两个节点是同一个节点 (判断节点的tag和 节点的key)  比较两个节点的属性是否有差异 （复用老的节点，将差异的属性更新）
+        // 3.节点比较完毕后就需要比较两人的儿子
+        if( !isSameVnode(oldVnode,vnode) ){
+            oldVnode.el.parentNode.replaceChild(createElm(vnode),oldVnode.el )
+        }
     }
 }
