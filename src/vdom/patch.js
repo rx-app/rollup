@@ -13,7 +13,7 @@ export function createElm(vnode){
     }
     return vnode.el
 }
-export function patchProps(el,oldProps,props){
+export function patchProps(el,oldProps={},props={}){
     let oldStyles = oldProps.style || {}
     let newStyles = props.style || {}
     for(let key in oldStyles){  // 如果这个样式旧节点有，但是新节点没有，需要删除
@@ -87,8 +87,8 @@ function patchVnode(oldVnode,vnode){
         // 完整的diff算法 需要比较两个人的儿子
         updateChildren(el,oldChildren,newChildren)
     }else if(newChildren.length>0){ //老的没有，新的有
-        mountChildren(el,newChildren)//新的没有,老的有
-    }else if(oldChildren.length>0){
+        mountChildren(el,newChildren)
+    }else if(oldChildren.length>0){//新的没有,老的有
         el.innerHTML = ''
     }
     return el
@@ -107,4 +107,27 @@ function updateChildren(el,oldChildren,newChildren){
     let newStartIndex = 0
     let oldEndIndex = oldChildren.length - 1
     let newEndIndex = newChildren.length - 1
+
+    let oldStartVnode = oldChildren[0]
+    let newStartVnode = newChildren[0]
+    let oldEndVnode = oldChildren[oldEndIndex]
+    let newEndVnode = newChildren[newEndIndex]
+
+    while(oldStartIndex<=oldEndIndex && newStartIndex<=newEndIndex){//双方有一方头指针，大于尾部指针则停止循环
+        if(isSameVnode(oldStartVnode,newStartVnode)){
+            patchVnode(oldStartVnode,newStartVnode)
+            oldStartVnode = oldChildren[++oldStartIndex]
+            newStartVnode = newChildren[++newStartIndex]
+        }
+    }
+
+    // 插入多余的
+    if(newStartIndex<=newEndIndex){
+        for(let i = newStartIndex;i<=newStartIndex;i++){
+            let childEl = createElm(newChildren[i])
+            el.appendChild(childEl)
+        }
+    }
+
+    // console.log(oldStartVnode,newStartVnode,oldEndVnode,newEndVnode)
 }
