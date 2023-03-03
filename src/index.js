@@ -18,14 +18,14 @@ initStateMixin(Vue)
 
 
 // ------------------测试代码-------------------
-let render1 = complileToFunction(`<li key="a" style="color:red">{{name}}</li>`)
+let render1 = complileToFunction(`<li key="a" a="1" style="color:red"></li>`)
 let vm1 = new Vue({data:{name:'zf'}})
 let prevVnode = render1.call(vm1)
 
 let el = createElm(prevVnode)
 document.body.appendChild(el)
 
-let render2 = complileToFunction(`<span key="b" style="color:red;background:blue">{{name}}</span>`)
+let render2 = complileToFunction(`<li key="a"  a="1" style="color:red;">{{name}}</li>`)
 let vm2 = new Vue({data:{name:'zf'}})
 let nextVnode = render2.call(vm2)
 
