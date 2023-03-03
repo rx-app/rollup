@@ -129,5 +129,12 @@ function updateChildren(el,oldChildren,newChildren){
         }
     }
 
+    if(oldStartIndex<=oldEndIndex){
+        for(let i = oldStartIndex;i<=oldEndIndex;i++){
+            let childEl = oldChildren[i].el
+            el.removeChild(childEl)
+        }
+    }
+
     // console.log(oldStartVnode,newStartVnode,oldEndVnode,newEndVnode)
 }

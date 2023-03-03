@@ -22,6 +22,7 @@ let render1 = complileToFunction(`<ul a="1" style="color:red">
     <li key="a">a</li>
     <li key="b">b</li>
     <li key="c">c</li>
+    <li key="d">d</li>
 </ul>`)
 let vm1 = new Vue({data:{name:'zf'}})
 let prevVnode = render1.call(vm1)
@@ -33,7 +34,6 @@ let render2 = complileToFunction(`<ul a="1" style="color:red">
     <li key="a">a</li>
     <li key="b">b</li>
     <li key="c">c</li>
-    <li key="d">d</li>
 </ul>`)
 let vm2 = new Vue({data:{name:'zf'}})
 let nextVnode = render2.call(vm2)
