@@ -86,8 +86,9 @@ function patchVnode(oldVnode,vnode){
     if(oldChildren.length>0 && newChildren.length>0){
         // 完整的diff算法 需要比较两个人的儿子
     }else if(newChildren.length>0){ //老的没有，新的有
-        
-        mountChildren(el,newChildren)
+        mountChildren(el,newChildren)//新的没有,老的有
+    }else if(oldChildren.length>0){
+        el.innerHTML = ''
     }
     return el
 }
