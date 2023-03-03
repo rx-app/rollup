@@ -25,7 +25,7 @@ let prevVnode = render1.call(vm1)
 let el = createElm(prevVnode)
 document.body.appendChild(el)
 
-let render2 = complileToFunction(`<li key="a"  a="1" style="color:red;"></li>`)
+let render2 = complileToFunction(`<li key="a"  a="1" style="color:red;">{{name}}</li>`)
 let vm2 = new Vue({data:{name:'zf'}})
 let nextVnode = render2.call(vm2)
 
@@ -36,7 +36,7 @@ setTimeout(() => {
 }, 1000);
 
 
-console.log(prevVnode,nextVnode)
+// console.log(prevVnode,nextVnode)
 
 
 export default Vue

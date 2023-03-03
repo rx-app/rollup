@@ -85,6 +85,7 @@ function patchVnode(oldVnode,vnode){
 
     if(oldChildren.length>0 && newChildren.length>0){
         // 完整的diff算法 需要比较两个人的儿子
+        updateChildren(el,oldChildren,newChildren)
     }else if(newChildren.length>0){ //老的没有，新的有
         mountChildren(el,newChildren)//新的没有,老的有
     }else if(oldChildren.length>0){
@@ -98,4 +99,12 @@ function mountChildren(el,newChildren){
         let child = newChildren[i]
         el.appendChild(createElm(child))
     }
+}
+
+function updateChildren(el,oldChildren,newChildren){
+    // 双指针
+    let oldStartIndex = 0
+    let newStartIndex = 0
+    let oldEndIndex = oldChildren.length - 1
+    let newEndIndex = newChildren.length - 1
 }
