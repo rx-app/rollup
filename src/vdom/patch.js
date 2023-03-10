@@ -113,23 +113,33 @@ function updateChildren(el,oldChildren,newChildren){
     let oldEndVnode = oldChildren[oldEndIndex]
     let newEndVnode = newChildren[newEndIndex]
 
+    // 移动指针时，新旧都需要满足尾指针大于头指针
     while(oldStartIndex<=oldEndIndex && newStartIndex<=newEndIndex){//双方有一方头指针，大于尾部指针则停止循环
-        if(isSameVnode(oldStartVnode,newStartVnode)){
+        if(isSameVnode(oldStartVnode,newStartVnode)){ //头相同，push
             patchVnode(oldStartVnode,newStartVnode)
-            oldStartVnode = oldChildren[++oldStartIndex]
+            oldStartVnode = oldChildren[++oldStartIndex]  //++,指针从头往尾移动
             newStartVnode = newChildren[++newStartIndex]
+        }
+
+        if(isSameVnode(oldEndVnode,newEndVnode)){ //尾相同，unshift
+            patchVnode(oldEndVnode,newEndVnode)
+            oldEndVnode = oldChildren[--oldEndIndex] //--,指针从尾往头移动
+            newEndVnode = newChildren[--newEndIndex]
         }
     }
 
     // 插入多余的
-    if(newStartIndex<=newEndIndex){
-        for(let i = newStartIndex;i<=newStartIndex;i++){
+    if(newStartIndex<=newEndIndex){ //新的多，插入
+        for(let i = newStartIndex;i<=newEndIndex;i++){
             let childEl = createElm(newChildren[i])
-            el.appendChild(childEl)
+            // 指针从头往尾移动时，最后的时候，下一个元素是没有值的
+            let anchor = newChildren[newEndIndex+1]?newChildren[newEndIndex+1].el:null //下一个元素
+            el.insertBefore(childEl,anchor) //anchor 为nul1的时候则会认为是appendchild
+            // el.appendChild(childEl)
         }
     }
 
-    if(oldStartIndex<=oldEndIndex){
+    if(oldStartIndex<=oldEndIndex){ //老的多，删除
         for(let i = oldStartIndex;i<=oldEndIndex;i++){
             let childEl = oldChildren[i].el
             el.removeChild(childEl)
