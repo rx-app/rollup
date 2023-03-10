@@ -130,6 +130,12 @@ function updateChildren(el,oldChildren,newChildren){//el是最外层的ul
             oldEndVnode = oldChildren[--oldEndIndex] //旧节点从尾往头移动
             newStartVnode = newChildren[++newStartIndex]//新节点从头往尾移动
             
+        }else if(isSameVnode(oldStartVnode,newEndVnode)){// 交叉比对  abcd -> bcda
+            patchVnode(oldStartVnode,newEndVnode) 
+            el.insertBefore(oldStartVnode.el,oldEndVnode.el.nextSibling)//old节点是有el的，新节点是需要creatElm创建
+            oldStartVnode = oldChildren[++oldStartIndex] //旧节点从尾往头移动
+            newEndVnode = newChildren[--newEndIndex]//新节点从头往尾移动
+            
         }
     }
 

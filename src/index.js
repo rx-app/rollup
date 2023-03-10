@@ -32,10 +32,11 @@ let el = createElm(prevVnode)
 document.body.appendChild(el)
 
 let render2 = complileToFunction(`<ul a="1" style="color:red">
-    <li key="d">d</li>
-    <li key="a">a</li>
+    
     <li key="b">b</li>
     <li key="c">c</li>
+    <li key="d">d</li>
+    <li key="a">a</li>
 </ul>`)
 let vm2 = new Vue({data:{name:'zf'}})
 let nextVnode = render2.call(vm2)
