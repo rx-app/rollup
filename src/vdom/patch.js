@@ -101,7 +101,8 @@ function mountChildren(el,newChildren){
     }
 }
 
-function updateChildren(el,oldChildren,newChildren){
+function updateChildren(el,oldChildren,newChildren){//el是最外层的ul
+    
     // 双指针
     let oldStartIndex = 0
     let newStartIndex = 0
@@ -119,12 +120,16 @@ function updateChildren(el,oldChildren,newChildren){
             patchVnode(oldStartVnode,newStartVnode)
             oldStartVnode = oldChildren[++oldStartIndex]  //++,指针从头往尾移动
             newStartVnode = newChildren[++newStartIndex]
-        }
-
-        if(isSameVnode(oldEndVnode,newEndVnode)){ //尾相同，unshift
+        }else if(isSameVnode(oldEndVnode,newEndVnode)){ //尾相同，unshift
             patchVnode(oldEndVnode,newEndVnode)
             oldEndVnode = oldChildren[--oldEndIndex] //--,指针从尾往头移动
             newEndVnode = newChildren[--newEndIndex]
+        }else if(isSameVnode(oldEndVnode,newStartVnode)){// 交叉比对  abcd -> dabc
+            patchVnode(oldEndVnode,newStartVnode)
+            el.insertBefore(oldEndVnode.el,oldStartVnode.el)//old节点是有el的，新节点是需要creatElm创建
+            oldEndVnode = oldChildren[--oldEndIndex] //旧节点从尾往头移动
+            newStartVnode = newChildren[++newStartIndex]//新节点从头往尾移动
+            
         }
     }
 
