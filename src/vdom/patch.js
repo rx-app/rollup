@@ -123,7 +123,7 @@ function updateChildren(el,oldChildren,newChildren){
 
     // 插入多余的
     if(newStartIndex<=newEndIndex){
-        for(let i = newStartIndex;i<=newStartIndex;i++){
+        for(let i = newStartIndex;i<=newEndIndex;i++){
             let childEl = createElm(newChildren[i])
             el.appendChild(childEl)
         }
